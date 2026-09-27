@@ -83,7 +83,7 @@ app.get("/api/health", (req: Request, res: Response) => {
  * Routes
  */
 app.use("/api/schedule", scheduleRoutes);
-app.use("/api/course", courseRoutes)
+app.use("/api/courses", courseRoutes)
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/nav", navRoutes);
 app.use("/api/auth", authRoutes);

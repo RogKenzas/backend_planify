@@ -2,7 +2,7 @@ import express = require('express');
 import courseController = require('../controllers/courseController');
 
 const router = express.Router();
-
+console.log("✅ ROUTES COURSE CHARGÉES");
 
 // ===============================
 // RÉCUPÉRER TOUS LES COURS
