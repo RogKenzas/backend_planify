@@ -30,6 +30,7 @@ app.use("/api/schedule", scheduleRoutes);
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/nav", navRoutes);
 app.use("/api/auth", authRoutes);
+
 app.listen(port, () => {
     console.log(`Serveur backend est en cours d'exécution sur http://localhost:${port}`);
 });

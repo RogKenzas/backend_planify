@@ -5,6 +5,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const scheduleRoutes = require("./routes/schedule");
 const teacherRoutes = require("./routes/teachers");
+const courseRoutes = require("./routes/course")
 const navRoutes = require("./routes/nav");
 const authRoutes = require("./routes/auth");
 const dotenv = require("dotenv");
@@ -82,6 +83,7 @@ app.get("/api/health", (req: Request, res: Response) => {
  * Routes
  */
 app.use("/api/schedule", scheduleRoutes);
+app.use("/api/course", courseRoutes)
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/nav", navRoutes);
 app.use("/api/auth", authRoutes);
