@@ -5,6 +5,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const scheduleRoutes = require("./routes/schedule");
 const teacherRoutes = require("./routes/teachers");
+const classroomRoutes = require("./routes/classrooms");
 const courseRoutes = require("./routes/course")
 const navRoutes = require("./routes/nav");
 const authRoutes = require("./routes/auth");
@@ -87,6 +88,7 @@ app.use("/api/courses", courseRoutes)
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/nav", navRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/classrooms", classroomRoutes);
 
 /**
  * Démarrage du serveur
