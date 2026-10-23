@@ -14,10 +14,10 @@ const courseSchema = new mongoose.Schema(
             required: true
         },
 
-        room: {
-            type: String,
-            required: true,
-            trim: true
+        classroomId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Classroom",
+            required: true
         },
 
         duration: {

@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 
 import mongoose = require('mongoose');
 
+const Classroom = require('../models/Classroom');
 const Course = require('../models/Course');
 
 
@@ -16,7 +17,8 @@ const getCourses = async (
 ) => {
     try {
 
-        const courses = await Course.find();
+        const courses = await Course.find()
+            .populate('classroomId', 'name');
 
         return res.status(200).json(courses);
 
@@ -59,7 +61,9 @@ const getCourseById = async (
             });
         }
 
-        const course = await Course.findById(id);
+        const course = await Course
+            .findById(id)
+            .populate('classroomId', 'name');
 
         if (!course) {
             return res.status(404).json({
@@ -97,34 +101,77 @@ const createCourse = async (
         const {
             title,
             teacherId,
-            room,
+            classroomId,
             duration,
             color
         } = req.body;
 
-        if (!title || !teacherId || !room) {
+        // ================================
+        // Champs obligatoires
+        // ================================
+
+        if (!title || !teacherId || !classroomId) {
             return res.status(400).json({
                 message:
                     'Le titre, le professeur et la salle sont obligatoires'
             });
         }
 
-        // Vérification de l'ID professeur
+        // ================================
+        // Vérifier teacherId
+        // ================================
+
         if (!mongoose.Types.ObjectId.isValid(teacherId)) {
             return res.status(400).json({
                 message: 'ID du professeur invalide'
             });
         }
 
+        // ================================
+        // Vérifier classroomId
+        // ================================
+
+        if (!mongoose.Types.ObjectId.isValid(classroomId)) {
+            return res.status(400).json({
+                message: 'ID de la salle invalide'
+            });
+        }
+
+        // ================================
+        // Vérifier que la salle existe
+        // ================================
+
+        const classroom = await Classroom.findById(classroomId);
+
+        if (!classroom) {
+            return res.status(404).json({
+                message: 'Salle introuvable'
+            });
+        }
+
+        // ================================
+        // Création
+        // ================================
+
         const course = await Course.create({
             title,
             teacherId,
-            room,
+            classroomId,
             duration: duration || '2h',
             color: color || 'blue'
         });
 
-        return res.status(201).json(course);
+        // ================================
+        // Retourner le cours avec la salle
+        // ================================
+
+        const populatedCourse = await Course
+            .findById(course._id)
+            .populate('classroomId', 'name');
+
+        return res.status(201).json(
+            populatedCourse
+        );
 
     } catch (error) {
 
@@ -168,12 +215,15 @@ const updateCourse = async (
         const {
             title,
             teacherId,
-            room,
+            classroomId,
             duration,
             color
         } = req.body;
 
-        // Vérifier teacherId s'il est fourni
+        // ================================
+        // Vérifier teacherId
+        // ================================
+
         if (
             teacherId &&
             !mongoose.Types.ObjectId.isValid(teacherId)
@@ -183,13 +233,46 @@ const updateCourse = async (
             });
         }
 
+        // ================================
+        // Vérifier classroomId
+        // ================================
+
+        if (
+            classroomId &&
+            !mongoose.Types.ObjectId.isValid(classroomId)
+        ) {
+            return res.status(400).json({
+                message: 'ID de la salle invalide'
+            });
+        }
+
+        // ================================
+        // Vérifier que la salle existe
+        // ================================
+
+        if (classroomId) {
+
+            const classroom =
+                await Classroom.findById(classroomId);
+
+            if (!classroom) {
+                return res.status(404).json({
+                    message: 'Salle introuvable'
+                });
+            }
+        }
+
+        // ================================
+        // Modification
+        // ================================
+
         const updatedCourse =
             await Course.findByIdAndUpdate(
                 id,
                 {
                     title,
                     teacherId,
-                    room,
+                    classroomId,
                     duration,
                     color
                 },
@@ -197,6 +280,9 @@ const updateCourse = async (
                     new: true,
                     runValidators: true
                 }
+            ).populate(
+                'classroomId',
+                'name'
             );
 
         if (!updatedCourse) {
@@ -205,7 +291,9 @@ const updateCourse = async (
             });
         }
 
-        return res.status(200).json(updatedCourse);
+        return res.status(200).json(
+            updatedCourse
+        );
 
     } catch (error) {
 
@@ -215,11 +303,11 @@ const updateCourse = async (
         );
 
         return res.status(500).json({
-            message: 'Impossible de modifier le cours'
+            message:
+                'Impossible de modifier le cours'
         });
     }
 };
-
 
 // =====================================================
 // SUPPRIMER UN COURS
