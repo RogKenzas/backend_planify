@@ -1,0 +1,32 @@
+"use strict";
+const express = require("express");
+const courseController = require("../controllers/courseController");
+const router = express.Router();
+console.log("✅ ROUTES COURSE CHARGÉES");
+// ===============================
+// RÉCUPÉRER TOUS LES COURS
+// GET /api/courses
+// ===============================
+router.get('/', courseController.getCourses);
+// ===============================
+// RÉCUPÉRER UN COURS PAR ID
+// GET /api/courses/:id
+// ===============================
+router.get('/:id', courseController.getCourseById);
+// ===============================
+// CRÉER UN COURS
+// POST /api/courses
+// ===============================
+router.post('/', courseController.createCourse);
+// ===============================
+// MODIFIER UN COURS
+// PUT /api/courses/:id
+// ===============================
+router.put('/:id', courseController.updateCourse);
+// ===============================
+// SUPPRIMER UN COURS
+// DELETE /api/courses/:id
+// ===============================
+router.delete('/:id', courseController.deleteCourse);
+module.exports = router;
+//# sourceMappingURL=course.js.map
