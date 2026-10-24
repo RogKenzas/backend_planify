@@ -12,11 +12,6 @@ const courseSchema = new mongoose.Schema({
         ref: "Teacher",
         required: true
     },
-    classroomId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Classroom",
-        required: true
-    },
     duration: {
         type: String,
         required: true,

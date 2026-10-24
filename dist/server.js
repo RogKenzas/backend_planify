@@ -9,6 +9,7 @@ const classroomRoutes = require("./routes/classrooms");
 const courseRoutes = require("./routes/course");
 const navRoutes = require("./routes/nav");
 const authRoutes = require("./routes/auth");
+const roomRoutes = require('./routes/roomRoutes');
 const dotenv = require("dotenv");
 dotenv.config();
 const port = Number(process.env.PORT) || 10000;
@@ -71,6 +72,7 @@ app.use("/api/teachers", teacherRoutes);
 app.use("/api/nav", navRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/classrooms", classroomRoutes);
+app.use('/api/rooms', roomRoutes);
 /**
  * Démarrage du serveur
  */

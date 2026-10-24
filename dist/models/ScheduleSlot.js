@@ -14,6 +14,12 @@ const scheduleSlotSchema = new mongoose.Schema({
         ref: "Classroom",
         required: true,
     },
+    roomId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Room",
+        required: false,
+        default: null
+    },
     /**
      * Cours placé dans le créneau.
      */

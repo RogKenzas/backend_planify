@@ -18,8 +18,6 @@ const getCourses = async (
     try {
 
         const courses = await Course.find()
-            .populate('classroomId', 'name');
-
         return res.status(200).json(courses);
 
     } catch (error) {
@@ -61,10 +59,7 @@ const getCourseById = async (
             });
         }
 
-        const course = await Course
-            .findById(id)
-            .populate('classroomId', 'name');
-
+        const course = await Course.findById(id)
         if (!course) {
             return res.status(404).json({
                 message: 'Cours introuvable'
@@ -101,25 +96,16 @@ const createCourse = async (
         const {
             title,
             teacherId,
-            classroomId,
             duration,
             color
         } = req.body;
 
-        // ================================
-        // Champs obligatoires
-        // ================================
-
-        if (!title || !teacherId || !classroomId) {
+        if (!title || !teacherId) {
             return res.status(400).json({
                 message:
-                    'Le titre, le professeur et la salle sont obligatoires'
+                    'Le titre et le professeur sont obligatoires'
             });
         }
-
-        // ================================
-        // Vérifier teacherId
-        // ================================
 
         if (!mongoose.Types.ObjectId.isValid(teacherId)) {
             return res.status(400).json({
@@ -127,51 +113,14 @@ const createCourse = async (
             });
         }
 
-        // ================================
-        // Vérifier classroomId
-        // ================================
-
-        if (!mongoose.Types.ObjectId.isValid(classroomId)) {
-            return res.status(400).json({
-                message: 'ID de la salle invalide'
-            });
-        }
-
-        // ================================
-        // Vérifier que la salle existe
-        // ================================
-
-        const classroom = await Classroom.findById(classroomId);
-
-        if (!classroom) {
-            return res.status(404).json({
-                message: 'Salle introuvable'
-            });
-        }
-
-        // ================================
-        // Création
-        // ================================
-
         const course = await Course.create({
             title,
             teacherId,
-            classroomId,
             duration: duration || '2h',
             color: color || 'blue'
         });
 
-        // ================================
-        // Retourner le cours avec la salle
-        // ================================
-
-        const populatedCourse = await Course
-            .findById(course._id)
-            .populate('classroomId', 'name');
-
-        return res.status(201).json(
-            populatedCourse
-        );
+        return res.status(201).json(course);
 
     } catch (error) {
 
@@ -215,14 +164,9 @@ const updateCourse = async (
         const {
             title,
             teacherId,
-            classroomId,
             duration,
             color
         } = req.body;
-
-        // ================================
-        // Vérifier teacherId
-        // ================================
 
         if (
             teacherId &&
@@ -233,46 +177,12 @@ const updateCourse = async (
             });
         }
 
-        // ================================
-        // Vérifier classroomId
-        // ================================
-
-        if (
-            classroomId &&
-            !mongoose.Types.ObjectId.isValid(classroomId)
-        ) {
-            return res.status(400).json({
-                message: 'ID de la salle invalide'
-            });
-        }
-
-        // ================================
-        // Vérifier que la salle existe
-        // ================================
-
-        if (classroomId) {
-
-            const classroom =
-                await Classroom.findById(classroomId);
-
-            if (!classroom) {
-                return res.status(404).json({
-                    message: 'Salle introuvable'
-                });
-            }
-        }
-
-        // ================================
-        // Modification
-        // ================================
-
         const updatedCourse =
             await Course.findByIdAndUpdate(
                 id,
                 {
                     title,
                     teacherId,
-                    classroomId,
                     duration,
                     color
                 },
@@ -280,9 +190,6 @@ const updateCourse = async (
                     new: true,
                     runValidators: true
                 }
-            ).populate(
-                'classroomId',
-                'name'
             );
 
         if (!updatedCourse) {
@@ -291,9 +198,7 @@ const updateCourse = async (
             });
         }
 
-        return res.status(200).json(
-            updatedCourse
-        );
+        return res.status(200).json(updatedCourse);
 
     } catch (error) {
 

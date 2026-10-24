@@ -50,13 +50,13 @@ const serializeScheduleSlot = (slot: any) => ({
 
   course: slot.courseId?._id
     ? {
-        id: String(slot.courseId._id),
-        title: slot.courseId.title,
-        teacherId: String(slot.courseId.teacherId),
-        room: slot.courseId.room,
-        duration: slot.courseId.duration,
-        color: slot.courseId.color,
-      }
+      id: String(slot.courseId._id),
+      title: slot.courseId.title,
+      teacherId: String(slot.courseId.teacherId),
+      room: slot.courseId.room,
+      duration: slot.courseId.duration,
+      color: slot.courseId.color,
+    }
     : null,
 
   createdAt: slot.createdAt,
