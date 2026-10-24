@@ -1,15 +1,6 @@
 import express = require("express");
 
-const {
-  getCourses,
-  createCourse,
-  updateCourse,
-
-  // Planning par salle
-  getClassroomSchedule,
-  upsertScheduleSlot,
-  deleteScheduleSlot,
-} = require("../controllers/scheduleControllers");
+const { getClassroomSchedule, upsertScheduleSlot, deleteScheduleSlot, } = require("../controllers/scheduleControllers");
 
 const router = express.Router();
 
@@ -23,7 +14,7 @@ const router = express.Router();
  *
  * Récupère tous les cours du catalogue.
  */
-router.get("/data", getCourses);
+// router.get("/data", getCourses);
 
 
 /**
@@ -31,7 +22,7 @@ router.get("/data", getCourses);
  *
  * Crée un nouveau cours.
  */
-router.post("/post", createCourse);
+// router.post("/post", createCourse);
 
 
 /* =========================================================
@@ -46,11 +37,7 @@ router.post("/post", createCourse);
  * Exemple :
  * /api/schedule/classroom/671234...
  */
-router.get(
-  "/classroom/:classroomId",
-  getClassroomSchedule
-);
-
+router.get( "/classroom/:classroomId", getClassroomSchedule );
 
 /**
  * PUT /api/schedule/classroom/:classroomId
@@ -65,10 +52,7 @@ router.get(
  *   "time": "08:00"
  * }
  */
-router.put(
-  "/classroom/:classroomId",
-  upsertScheduleSlot
-);
+router.put( "/classroom/:classroomId", upsertScheduleSlot );
 
 
 /**
@@ -76,10 +60,7 @@ router.put(
  *
  * Supprime un créneau du planning.
  */
-router.delete(
-  "/classroom/:classroomId/:slotId",
-  deleteScheduleSlot
-);
+router.delete( "/classroom/:classroomId/:slotId", deleteScheduleSlot );
 
 
 /* =========================================================
@@ -94,7 +75,7 @@ router.delete(
  * IMPORTANT :
  * cette route reste après les routes /classroom.
  */
-router.put("/:id", updateCourse);
+// router.put("/:id", updateCourse);
 
 
 module.exports = router;

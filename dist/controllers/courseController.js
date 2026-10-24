@@ -1,6 +1,5 @@
 "use strict";
 const mongoose = require("mongoose");
-const Classroom = require('../models/Classroom');
 const Course = require('../models/Course');
 // =====================================================
 // RÉCUPÉRER TOUS LES COURS

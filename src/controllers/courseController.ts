@@ -1,8 +1,6 @@
 import type { Request, Response } from 'express';
-
 import mongoose = require('mongoose');
 
-const Classroom = require('../models/Classroom');
 const Course = require('../models/Course');
 
 

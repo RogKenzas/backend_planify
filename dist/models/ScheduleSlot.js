@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const scheduleSlotSchema = new mongoose.Schema({
     /**
-     * Salle à laquelle appartient ce créneau.
+     * Classe à laquelle appartient ce créneau.
      *
      * Exemple :
      * 4DSA possède son propre lundi 08:00,

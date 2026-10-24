@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
-const { getCourses, createCourse, updateCourse, 
-// Planning par salle
-getClassroomSchedule, upsertScheduleSlot, deleteScheduleSlot, } = require("../controllers/scheduleControllers");
+const { getClassroomSchedule, upsertScheduleSlot, deleteScheduleSlot, } = require("../controllers/scheduleControllers");
 const router = express.Router();
 /* =========================================================
    COURS
@@ -13,13 +11,13 @@ const router = express.Router();
  *
  * Récupère tous les cours du catalogue.
  */
-router.get("/data", getCourses);
+// router.get("/data", getCourses);
 /**
  * POST /api/schedule/post
  *
  * Crée un nouveau cours.
  */
-router.post("/post", createCourse);
+// router.post("/post", createCourse);
 /* =========================================================
    EMPLOI DU TEMPS PAR SALLE
    ========================================================= */
@@ -63,6 +61,6 @@ router.delete("/classroom/:classroomId/:slotId", deleteScheduleSlot);
  * IMPORTANT :
  * cette route reste après les routes /classroom.
  */
-router.put("/:id", updateCourse);
+// router.put("/:id", updateCourse);
 module.exports = router;
 //# sourceMappingURL=schedule.js.map
