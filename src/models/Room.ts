@@ -12,7 +12,9 @@ const roomSchema = new mongoose.Schema(
         building: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
+            uppercase: true,
+            enum: ['A', 'G']
         },
 
         capacity: {

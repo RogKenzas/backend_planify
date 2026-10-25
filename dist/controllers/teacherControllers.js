@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Teacher = require("../models/Teacher");
+const Course = require("../models/Course");
+const Classroom = require("../models/Classroom");
+const ScheduleSlot = require("../models/ScheduleSlot");
 const initialsFromName = (name) => name
     .split(" ")
     .filter(Boolean)
@@ -37,5 +40,34 @@ const createTeacher = async (req, res) => {
         res.status(500).json({ message: "Impossible d'enregistrer le professeur" });
     }
 };
-module.exports = { getTeachers, createTeacher };
+const deleteAllTeachers = async (_req, res) => {
+    try {
+        /*
+         * Les cours dépendent des professeurs.
+         * Les créneaux dépendent des cours.
+         * Les classes possèdent également un teacherId obligatoire.
+         *
+         * On nettoie donc les données dépendantes avant
+         * de supprimer les professeurs.
+         */
+        const deletedScheduleSlots = await ScheduleSlot.deleteMany({});
+        const deletedCourses = await Course.deleteMany({});
+        const deletedClassrooms = await Classroom.deleteMany({});
+        const deletedTeachers = await Teacher.deleteMany({});
+        return res.status(200).json({
+            message: "Tous les professeurs ont été supprimés avec succès",
+            deletedTeachers: deletedTeachers.deletedCount,
+            deletedCourses: deletedCourses.deletedCount,
+            deletedClassrooms: deletedClassrooms.deletedCount,
+            deletedScheduleSlots: deletedScheduleSlots.deletedCount,
+        });
+    }
+    catch (error) {
+        console.error("Erreur suppression des professeurs :", error);
+        return res.status(500).json({
+            message: "Impossible de supprimer tous les professeurs",
+        });
+    }
+};
+module.exports = { getTeachers, createTeacher, deleteAllTeachers };
 //# sourceMappingURL=teacherControllers.js.map

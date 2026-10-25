@@ -1,6 +1,7 @@
 "use strict";
 const mongoose = require("mongoose");
 const Course = require('../models/Course');
+const ScheduleSlot = require('../models/ScheduleSlot');
 // =====================================================
 // RÉCUPÉRER TOUS LES COURS
 // GET /api/courses
@@ -165,11 +166,35 @@ const deleteCourse = async (req, res) => {
         });
     }
 };
+// =====================================================
+// SUPPRIMER TOUS LES COURS
+// DELETE /api/courses
+// =====================================================
+const deleteAllCourses = async (req, res) => {
+    try {
+        // Supprime les créneaux utilisant les cours
+        const deletedSlots = await ScheduleSlot.deleteMany({});
+        // Supprime ensuite le catalogue
+        const deletedCourses = await Course.deleteMany({});
+        return res.status(200).json({
+            message: 'Le catalogue des cours a été vidé avec succès',
+            deletedCourses: deletedCourses.deletedCount,
+            deletedScheduleSlots: deletedSlots.deletedCount
+        });
+    }
+    catch (error) {
+        console.error('Erreur vidage catalogue :', error);
+        return res.status(500).json({
+            message: 'Impossible de vider le catalogue des cours'
+        });
+    }
+};
 module.exports = {
     getCourses,
     getCourseById,
     createCourse,
     updateCourse,
-    deleteCourse
+    deleteCourse,
+    deleteAllCourses
 };
 //# sourceMappingURL=courseController.js.map

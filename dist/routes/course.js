@@ -28,5 +28,6 @@ router.put('/:id', courseController.updateCourse);
 // DELETE /api/courses/:id
 // ===============================
 router.delete('/:id', courseController.deleteCourse);
+router.delete('/', courseController.deleteAllCourses);
 module.exports = router;
 //# sourceMappingURL=course.js.map

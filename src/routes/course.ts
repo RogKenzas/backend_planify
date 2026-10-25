@@ -53,5 +53,10 @@ router.delete(
     courseController.deleteCourse
 );
 
+router.delete(
+    '/',
+    courseController.deleteAllCourses
+);
+
 
 export = router;
